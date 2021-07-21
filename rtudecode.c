@@ -17,7 +17,7 @@
         IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
         FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
         AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISaE, ARISING FROM,
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
         SOFTWARE.
 */
@@ -25,28 +25,27 @@
 void decodeRtuUnits()
 {
 	// Run through each enabled device
-	for(int deviceId=1 ; deviceId<(config.dsTotal+1) ; deviceId++)
-	{	
+	for (int deviceId = 1; deviceId < (config.dsTotal + 1); deviceId++)
+	{
 		// process and module type specific post-modbus read scaling/decoding steps
 		switch (dataSource[deviceId].deviceType)
-		{			
-			default:
-			case RTU_AI8: // [1] -  RTU-AI8
-					// Nothing to do 
-					break;
-			case RTU_DI8: // [2] -  RTU-DI8
-					// Nothing to do 
-					break;
-			case RTU_RTD4: // [3] -  RTU-DI8
-					decodeRTD(deviceId);
-					break;		
-			case RTU_DO8:  // [4] -  RTU-DO8
-					// Nothing to do 
-					break;
-			case RTU_AO4:  // [5] -  RTU-AO4
-					// Nothing to do 
-					break;						
-					
-		}	// Switch on device type
-	} // loop on available devices
-} // function
+		{
+		default:
+		case RTU_AI8: // [1] -  RTU-AI8
+			// Nothing to do
+			break;
+		case RTU_DI8: // [2] -  RTU-DI8
+			// Nothing to do
+			break;
+		case RTU_RTD4: // [3] -  RTU-DI8
+			decodeRTD(deviceId);
+			break;
+		case RTU_DO8: // [4] -  RTU-DO8
+			// Nothing to do
+			break;
+		case RTU_AO4: // [5] -  RTU-AO4
+			// Nothing to do
+			break;
+		}
+	}
+}

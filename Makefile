@@ -1,7 +1,7 @@
 all: rtu
 
 rtu: 
-	gcc rtu-rtd.c -o rtu-rtd -lsqlite3 -lmodbus -lm 
+	gcc rtu-rtd.c -o rtu-rtd -lmodbus -lm
 
 clean:
 	rm -rf *.o rtu-rtd

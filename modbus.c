@@ -38,7 +38,7 @@ int getModbusValues()
 	// modbus device handle
 	modbus_t *mb;
 
-	// Defines storage for returned registers from modbus read, *must* equal or exceed maximum number of registers requested, ask me how I know...
+	// Defines storage for returned registers from modbus read, *must* equal or exceed maximum number of registers requested per transaction.	
 	uint16_t mbdata_UI16[30];
 
 	// Run through each device
@@ -68,11 +68,11 @@ int getModbusValues()
 				   dataSource[deviceId].interface);
 			modbus_close(mb);
 			modbus_free(mb);
-			return -1;
+			exit(1);
 		}
 
 		// Get RTU Specific channel config by making a read from the RTU module ahead of the main request
-		// Defined in r.c
+		// Defined in rtd.c
 		getChanConfig(mb, deviceId);
 
 		/*   Optimise modbus register reads, 
