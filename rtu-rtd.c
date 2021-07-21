@@ -23,10 +23,10 @@
 
         Dependancies :
 
-        apt-get install sqlite3 libsqlite3-dev libmodbus5 libmodbus-dev
+        apt-get install libmodbus5 libmodbus-dev
 
         Compile as below or use 'make all' to allow program to use external system (.so) libraries
-        gcc rtu-rtd.c -o log -lsqlite3 -lmodbus -lm
+        gcc rtu-rtd.c -o rtu-rtd -lmodbus -lm
 
 
 */
