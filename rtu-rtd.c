@@ -196,7 +196,6 @@ int main(int argc, char *argv[])
 			printf("\n");
 			printf("-w = Confirm writing configured setting registers to RTU NVRAM\n");
 			printf("\n");
-			printf("\n");
 			printf("-x = Reset all Maximum readings to current reading\n");
 			printf("-q = Reset all Minimum readings to current reading\n");
 			printf("\n");			
