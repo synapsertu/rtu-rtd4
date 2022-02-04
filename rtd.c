@@ -455,7 +455,7 @@ int resetMinReadings(int deviceId)
 	}
 
 	
-	printf("Restting Min Counters...\r\n");
+	printf("Resetting Min Counters...\r\n");
 	// remember that modbus registers index from 0 so address 40001 = 0th register
 	rc = modbus_write_registers(mb, 20,  4, tableRegisters);
 	if (rc == -1)
@@ -526,7 +526,7 @@ int resetMaxReadings(int deviceId)
 	}
 
 	
-	printf("Restting Max Counters...\n\r");
+	printf("Resetting Max Counters...\n\r");
 	// remember that modbus registers index from 0 so address 40001 = 0th register
 	rc = modbus_write_registers(mb, 16,  4, tableRegisters);
 	if (rc == -1)
