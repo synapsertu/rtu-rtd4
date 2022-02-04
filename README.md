@@ -36,6 +36,9 @@ Syntax :
 
 -w = Confirm writing configured setting registers to RTU NVRAM
 
+-x = Reset all Maximum readings to current reading
+-q = Reset all Minimum readings to current reading
+
 -d = debug mode
 
 Examples :
