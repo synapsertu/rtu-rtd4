@@ -403,3 +403,144 @@ int getChanConfig(modbus_t *mb, int deviceId)
 	// Nothing to do for RTU-RTD4
 	return 0;
 }
+
+
+// Uses modbus_write_registers (FC16) to reset min readings to max value so current reading is always below it
+int resetMinReadings(int deviceId) 
+{  
+
+	int rc;	
+	int regId;
+
+
+	uint16_t tableRegisters[8] = {32767,32767,32767,32767};
+
+	// modbus device handle
+	modbus_t *mb;  
+	
+	// Defines storage for returned registers from modbus read, *must* equal or exceed maximum number of registers requested, ask me how I know...
+	uint16_t mbdata_UI16[30]; 
+
+	
+	mb = modbus_new_rtu( dataSource[deviceId].interface, 
+					 	 dataSource[deviceId].baudRate,
+						 dataSource[deviceId].parity[0],
+						 dataSource[deviceId].dataBits,
+						 dataSource[deviceId].stopBit);
+						
+	modbus_set_slave(mb, dataSource[deviceId].modbusId);
+
+
+	// Set per-byte and total timeouts, this format has changed from the older libmodbus version.		
+	// you can use EITHER seconds OR microseconds, using BOTH will cause the command to be ignored.	
+	// This could be useful if we've a latent RF-Link 
+	// TODO : Don't hard code this, allow it to be configurable
+	modbus_set_response_timeout(mb, 5, 0);
+	modbus_set_byte_timeout(mb, 5, 0);
+
+	modbus_flush(mb);
+
+	// Enable/Disable Modbus debug
+	modbus_set_debug(mb, FALSE);
+
+	// check we can connect (not sure if this is relevant on serial modbus)
+	if(modbus_connect(mb) == -1)
+	{
+		printf("Connect Failed to Modbus ID [%i] on [%s]\n", dataSource[deviceId].modbusId, 
+															 dataSource[deviceId].interface);
+		modbus_flush(mb);
+		modbus_close(mb);
+		modbus_free(mb);
+		return -1;
+	}
+
+	
+	printf("Restting Min Counters...\r\n");
+	// remember that modbus registers index from 0 so address 40001 = 0th register
+	rc = modbus_write_registers(mb, 20,  4, tableRegisters);
+	if (rc == -1)
+	{
+		printf("Modbus request Fail : Device Address [%i] Start Address [20] For [4] Registers \n",deviceId);
+		modbus_flush(mb);
+		modbus_close(mb);
+		modbus_free(mb);
+		exit(1);
+	}			
+
+	modbus_flush(mb);
+	modbus_close(mb);
+	modbus_free(mb);
+	exit(1);
+	
+	exit(0);
+
+}
+
+
+// Uses modbus_write_registers (FC16) to reset max readings to 0 so current values always exceeds it
+int resetMaxReadings(int deviceId) 
+{  
+
+	int rc;	
+	int regId;
+
+
+	uint16_t tableRegisters[4] = {0,0,0,0}; 
+
+	// modbus device handle
+	modbus_t *mb;  
+	
+	// Defines storage for returned registers from modbus read, *must* equal or exceed maximum number of registers requested, ask me how I know...
+	uint16_t mbdata_UI16[30]; 
+
+	
+	mb = modbus_new_rtu( dataSource[deviceId].interface, 
+					 	 dataSource[deviceId].baudRate,
+						 dataSource[deviceId].parity[0],
+						 dataSource[deviceId].dataBits,
+						 dataSource[deviceId].stopBit);
+						
+	modbus_set_slave(mb, dataSource[deviceId].modbusId);
+
+
+	// Set per-byte and total timeouts, this format has changed from the older libmodbus version.		
+	// This could be useful if we've a latent RF-Link 
+	// TODO : Don't hard code this, allow it to be configurable
+	modbus_set_response_timeout(mb, 5, 0);
+	modbus_set_byte_timeout(mb, 5, 0);
+
+	modbus_flush(mb);
+	
+	// Enable/Disable Modbus debug
+	modbus_set_debug(mb, FALSE);
+
+	// check we can connect (not sure if this is relevant on serial modbus)
+	if(modbus_connect(mb) == -1)
+	{
+		printf("Connect Failed to Modbus ID [%i] on [%s]\n", dataSource[deviceId].modbusId, 
+															 dataSource[deviceId].interface);
+		modbus_flush(mb);
+		modbus_close(mb);
+		modbus_free(mb);
+		return -1;
+	}
+
+	
+	printf("Restting Max Counters...\n\r");
+	// remember that modbus registers index from 0 so address 40001 = 0th register
+	rc = modbus_write_registers(mb, 16,  4, tableRegisters);
+	if (rc == -1)
+	{
+		printf("Modbus request Fail : Device Address [%i] Start Address [16] For [4] Registers \n",deviceId);
+
+		modbus_flush(mb);
+		modbus_close(mb);
+		modbus_free(mb);
+		exit(1);
+	}			
+
+	modbus_flush(mb);
+	modbus_close(mb);
+	modbus_free(mb);
+	exit(0);
+}
