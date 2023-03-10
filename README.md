@@ -4,14 +4,16 @@
 
 ```# apt-get install libmodbus5 libmodbus-dev```
 
-Compile as below or use 'make all'
+Compile as below or use 'make'
 
 ```gcc rtu-rtd.c -o rtu-rtd -lmodbus -lm```
 
 ```
 Synapse RTU-RTD4 Reader - v1.0
 
-./rtu-rtd [-h|j|c] [-a] [-b] [-p] [-1] [-2] [-3] [-4] [-f] [-v] [-l] [-m] [-w] [-d]
+Synapse RTU-RTD4 Reader - v1.3
+
+./rtu-rtd [-h|j|c] [-a] [-b] [-p] [-1] [-2] [-3] [-4] [-f] [-v] [-l] [-m] [-w] [-d] [-r]
 
 Syntax :
 
@@ -30,19 +32,22 @@ Syntax :
 
 -f = All Channel 50Hz/60Hz Filter  (1=60Hz/2=50Hz)                     - default=60Hz
 -v = Select number of readings for rolling average (1=4|2=8|3=16|4=32) - default=8 readings
--l = Enable Live Float Value Calculation  (1=Off|2=On)                 - default=Off
+-l = Enable Raw RTD Reading Output (1=Off|2=On)                        - default=Off
 
 -m = Set value for RTU Baud Rate register (1=9600/2=14400/3=19200/4=38400/5=57600)
 
 -w = Confirm writing configured setting registers to RTU NVRAM
 
 -x = Reset all Maximum readings to current reading
--q = Reset all Minimum readings to current reading
+-z = Reset all Minimum readings to current reading
+
+-r = Read raw RTD data and calculate values (needs RTU unit in Raw RTD  output mode)
 
 -d = debug mode
 
 Examples :
 Read RTU, address 12, Baud 38400, output in JSON format   :  ./rtu-rtd -j -a 12 -b 38400 -p /dev/ttyS0
 Reconfigure RTU rolling average to 16 readings            :  ./rtu-rtd -a 3 -v 3 -p /dev/ttyS0 -w
+
 
 ```
