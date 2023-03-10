@@ -9,8 +9,6 @@ Compile as below or use 'make'
 ```gcc rtu-rtd.c -o rtu-rtd -lmodbus -lm```
 
 ```
-Synapse RTU-RTD4 Reader - v1.0
-
 Synapse RTU-RTD4 Reader - v1.3
 
 ./rtu-rtd [-h|j|c] [-a] [-b] [-p] [-1] [-2] [-3] [-4] [-f] [-v] [-l] [-m] [-w] [-d] [-r]
