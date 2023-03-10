@@ -53,7 +53,6 @@
 // Functions
 #include "config.c"
 #include "modbus.c"
-#include "rtudecode.c"
 
 int main(int argc, char *argv[])
 {
@@ -70,6 +69,7 @@ int main(int argc, char *argv[])
 	int LiveTempEnable = 0;
 	int setMaxToZero=0;
 	int setMinToZero=0;
+	int rawReadMode=0;
 
 	// Load Config, this is
 	readConfig();
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 	//
 	// The colon after the letter tells getopt to expect an argument after the option
 	// To disable the automatic error printing, put a colon as the first character
-	while ((opt = getopt(argc, argv, ":hjcda:b:p:1:2:3:4:f:v:l:m:wxq")) != -1)
+	while ((opt = getopt(argc, argv, ":hjcda:b:p:1:2:3:4:f:v:l:m:wxqzr")) != -1)
 	{
 		switch (opt)
 		{
@@ -163,17 +163,20 @@ int main(int argc, char *argv[])
 				modbusBaudSetting = atoi(optarg);
 			}
 			break;
+		case 'r': // Raw RTD Reading decode mode 
+				rawReadMode = 1;			
+			break;
 		case 'x': // Clear Max readings
 			setMaxToZero=1;
 			displayType = HUMANREAD;
 			break;
-		case 'q': // Clear Min readings
+		case 'z': // Clear Min readings
 			setMinToZero=1;
 			displayType = HUMANREAD;
 			break;				
 		case '?':
-			printf("Synapse RTU-RTD4 Reader - v1.0\n\n");
-			printf("%s [-h|j|c] [-a] [-b] [-p] [-1] [-2] [-3] [-4] [-f] [-v] [-l] [-m] [-w] [-d]\n\n", argv[0]);
+			printf("Synapse RTU-RTD4 Reader - v1.3\n\n");
+			printf("%s [-h|j|c] [-a] [-b] [-p] [-1] [-2] [-3] [-4] [-f] [-v] [-l] [-m] [-w] [-d] [-r] \n\n", argv[0]);
 			printf("Syntax :\n\n");
 			printf("-h = Human readable output (default)\n");
 			printf("-j = JSON readable output\n");
@@ -190,14 +193,16 @@ int main(int argc, char *argv[])
 			printf("\n");
 			printf("-f = All Channel 50Hz/60Hz Filter  (1=60Hz/2=50Hz)                     - default=60Hz\n");
 			printf("-v = Select number of readings for rolling average (1=4|2=8|3=16|4=32) - default=8 readings\n");
-			printf("-l = Enable Live Float Value Calculation  (1=Off|2=On)                 - default=Off\n");
+			printf("-l = Enable Raw RTD Reading Output (1=Off|2=On)                        - default=Off\n");
 			printf("\n");
 			printf("-m = Set value for RTU Baud Rate register (1=9600/2=14400/3=19200/4=38400/5=57600)  \n");
 			printf("\n");
 			printf("-w = Confirm writing configured setting registers to RTU NVRAM\n");
 			printf("\n");
 			printf("-x = Reset all Maximum readings to current reading\n");
-			printf("-q = Reset all Minimum readings to current reading\n");
+			printf("-z = Reset all Minimum readings to current reading\n");
+			printf("\n");
+			printf("-r = Read raw RTD data and calculate values (needs RTU unit in Raw RTD  output mode)\n");
 			printf("\n");			
 			printf("-d = debug mode\n");
 			printf("\n");
@@ -240,6 +245,15 @@ int main(int argc, char *argv[])
 		}
 	}
 	
+	if (rawReadMode==1)
+	{
+		for (int n=1 ;  n<17 ; n++)
+		{
+			dataSource[deviceId].regType[n]=1;
+		}
+		
+	}
+	
 	
 	if (debugMode == 1)
 	{
@@ -264,7 +278,11 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	decodeRtuUnits();
+	if (rawReadMode==1)
+	{
+		decodeRTD(deviceId);
+	}
+	
 
 	// Print output in desired format
 	for (deviceId = 1; deviceId < (config.dsTotal + 1); deviceId++)

@@ -55,12 +55,12 @@ int getModbusValues()
 		// Set per-byte and total timeouts, this format has changed from the older libmodbus version.
 		// This could be useful if we've a latent RF-Link
 		// TODO : Don't hard code this, allow it to be configurable
-		modbus_set_response_timeout(mb, 5, (5 * 1000000));
-		modbus_set_byte_timeout(mb, 5, (5 * 1000000));
+		modbus_set_response_timeout(mb, 5, 0);
+		modbus_set_byte_timeout(mb, 5, 0);
 
 		// Enable/Disable Modbus debug
 		modbus_set_debug(mb, FALSE);
-		
+
 		modbus_flush(mb);
 
 		// check we can connect (not sure if this is relevant on serial modbus)
@@ -73,6 +73,9 @@ int getModbusValues()
 			modbus_free(mb);
 			exit(1);
 		}
+
+		modbus_flush(mb);
+
 
 		// Get RTU Specific channel config by making a read from the RTU module ahead of the main request
 		// Defined in rtd.c

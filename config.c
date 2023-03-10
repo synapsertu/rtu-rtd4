@@ -48,7 +48,7 @@ int readConfig()
 	strcpy(dataSource[deviceId].interface, "/dev/ttyUSB0");
 	
 	
-	dataSource[deviceId].ChanMode[1] = 0;  // 
+	dataSource[deviceId].ChanMode[1] = 0;  
 	dataSource[deviceId].ChanMode[2] = 0; 
 	dataSource[deviceId].ChanMode[3] = 0; 
 	dataSource[deviceId].ChanMode[4] = 0; 
@@ -66,25 +66,25 @@ int readConfig()
 	//********************** DATA POINTS ****************************
 	//***************************************************************
 	
-	dataSource[deviceId].regAddress[1]  =9  ;	dataSource[deviceId].regType[1]	 =1  ;		// Channel 1 Live Raw Reading  
-	dataSource[deviceId].regAddress[2]  =10 ;	dataSource[deviceId].regType[2]	 =1  ;		// Channel 2 Live Raw Reading 
-	dataSource[deviceId].regAddress[3]  =11 ;	dataSource[deviceId].regType[3]	 =1  ;		// Channel 3 Live Raw Reading 
-	dataSource[deviceId].regAddress[4]  =12 ;	dataSource[deviceId].regType[4]	 =1  ;		// Channel 4 Live Raw Reading 
+	dataSource[deviceId].regAddress[1]  =1  ;	dataSource[deviceId].regType[1]	 =7  ;		// Channel 1 Live Raw Reading  
+	dataSource[deviceId].regAddress[2]  =3 	;	dataSource[deviceId].regType[2]	 =7  ;		// Channel 2 Live Raw Reading 
+	dataSource[deviceId].regAddress[3]  =5 	;	dataSource[deviceId].regType[3]	 =7  ;		// Channel 3 Live Raw Reading 
+	dataSource[deviceId].regAddress[4]  =7	;	dataSource[deviceId].regType[4]	 =7  ;		// Channel 4 Live Raw Reading 
 
-	dataSource[deviceId].regAddress[5]  =13  ;	dataSource[deviceId].regType[5]	 =1  ;		// Channel 1 Average Reading 
-	dataSource[deviceId].regAddress[6]  =14  ;	dataSource[deviceId].regType[6]	 =1  ;		// Channel 2 Average Reading 
-	dataSource[deviceId].regAddress[7]  =15  ;	dataSource[deviceId].regType[7]	 =1  ;		// Channel 3 Average Reading 
-	dataSource[deviceId].regAddress[8]  =16  ;	dataSource[deviceId].regType[8]	 =1  ;		// Channel 4 Average Reading 
+	dataSource[deviceId].regAddress[5]  =9  ;	dataSource[deviceId].regType[5]	 =7  ;		// Channel 1 Average Reading 
+	dataSource[deviceId].regAddress[6]  =11  ;	dataSource[deviceId].regType[6]	 =7  ;		// Channel 2 Average Reading 
+	dataSource[deviceId].regAddress[7]  =13  ;	dataSource[deviceId].regType[7]	 =7  ;		// Channel 3 Average Reading 
+	dataSource[deviceId].regAddress[8]  =15  ;	dataSource[deviceId].regType[8]	 =7  ;		// Channel 4 Average Reading 
 
-	dataSource[deviceId].regAddress[9]  =17  ;	dataSource[deviceId].regType[9]	 =1  ;		// Channel 1 Peek Maximum
-	dataSource[deviceId].regAddress[10] =18  ;	dataSource[deviceId].regType[10] =1  ;		// Channel 2 Peek Maximum 
-	dataSource[deviceId].regAddress[11] =19  ;	dataSource[deviceId].regType[11] =1  ;		// Channel 3 Peek Maximum 
-	dataSource[deviceId].regAddress[12] =20  ;	dataSource[deviceId].regType[12] =1  ;		// Channel 4 Peek Maximum 
+	dataSource[deviceId].regAddress[9]  =17  ;	dataSource[deviceId].regType[9]	 =7  ;		// Channel 1 Peek Maximum
+	dataSource[deviceId].regAddress[10] =19  ;	dataSource[deviceId].regType[10] =7  ;		// Channel 2 Peek Maximum 
+	dataSource[deviceId].regAddress[11] =21  ;	dataSource[deviceId].regType[11] =7  ;		// Channel 3 Peek Maximum 
+	dataSource[deviceId].regAddress[12] =23  ;	dataSource[deviceId].regType[12] =7  ;		// Channel 4 Peek Maximum 
 
-	dataSource[deviceId].regAddress[13] =21  ;	dataSource[deviceId].regType[13] =1  ;		// Channel 1 Peek Minimum 
-	dataSource[deviceId].regAddress[14] =22  ;	dataSource[deviceId].regType[14] =1  ;		// Channel 2 Peek Minimum 
-	dataSource[deviceId].regAddress[15] =23  ;	dataSource[deviceId].regType[15] =1  ;		// Channel 3 Peek Minimum
-	dataSource[deviceId].regAddress[16] =24  ;	dataSource[deviceId].regType[16] =1  ;		// Channel 4 Peek Minimum	
+	dataSource[deviceId].regAddress[13] =25  ;	dataSource[deviceId].regType[13] =7  ;		// Channel 1 Peek Minimum 
+	dataSource[deviceId].regAddress[14] =27  ;	dataSource[deviceId].regType[14] =7  ;		// Channel 2 Peek Minimum 
+	dataSource[deviceId].regAddress[15] =29  ;	dataSource[deviceId].regType[15] =7  ;		// Channel 3 Peek Minimum
+	dataSource[deviceId].regAddress[16] =31  ;	dataSource[deviceId].regType[16] =7  ;		// Channel 4 Peek Minimum	
 
 }
 

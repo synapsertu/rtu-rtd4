@@ -40,76 +40,28 @@ void displayRtdValues(int deviceId, int displayType)
 	for (regId = 1; regId < (dataSource[deviceId].numRegisters + 1); regId++)
 	{
 		// Deals with chan 1 value registers
-		if (dataSource[deviceId].regAddress[regId] == 9)
-		{
-			chanLve[1] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 13)
-		{
-			chanAvg[1] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 17)
-		{
-			chanMax[1] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 21)
-		{
-			chanMin[1] = dataSource[deviceId].value[regId];
-		}
+		if (dataSource[deviceId].regAddress[regId] == 1) 	{ chanLve[1] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 9)	{ chanAvg[1] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 17)	{ chanMax[1] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 25)	{ chanMin[1] = dataSource[deviceId].value[regId]; }
 
 		// Deals with chan 2 value registers
-		if (dataSource[deviceId].regAddress[regId] == 10)
-		{
-			chanLve[2] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 14)
-		{
-			chanAvg[2] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 18)
-		{
-			chanMax[2] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 22)
-		{
-			chanMin[2] = dataSource[deviceId].value[regId];
-		}
+		if (dataSource[deviceId].regAddress[regId] == 3)	{ chanLve[2] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 11)	{ chanAvg[2] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 19)	{ chanMax[2] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 27)	{ chanMin[2] = dataSource[deviceId].value[regId]; }
 
 		// Deals with chan 3 value registers
-		if (dataSource[deviceId].regAddress[regId] == 11)
-		{
-			chanLve[3] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 15)
-		{
-			chanAvg[3] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 19)
-		{
-			chanMax[3] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 23)
-		{
-			chanMin[3] = dataSource[deviceId].value[regId];
-		}
+		if (dataSource[deviceId].regAddress[regId] == 5)	{ chanLve[3] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 13)	{ chanAvg[3] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 21)	{ chanMax[3] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 29)	{ chanMin[3] = dataSource[deviceId].value[regId]; }
 
 		// Deals with chan 4 value registers
-		if (dataSource[deviceId].regAddress[regId] == 12)
-		{
-			chanLve[4] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 16)
-		{
-			chanAvg[4] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 20)
-		{
-			chanMax[4] = dataSource[deviceId].value[regId];
-		}
-		if (dataSource[deviceId].regAddress[regId] == 24)
-		{
-			chanMin[4] = dataSource[deviceId].value[regId];
-		}
+		if (dataSource[deviceId].regAddress[regId] == 7)	{ chanLve[4] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 15)	{ chanAvg[4] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 23)	{ chanMax[4] = dataSource[deviceId].value[regId]; }
+		if (dataSource[deviceId].regAddress[regId] == 31)	{ chanMin[4] = dataSource[deviceId].value[regId]; }
 	}
 
 	// present the output in the format desired by the command line option
@@ -220,11 +172,9 @@ void decodeRTD(int deviceId)
 	// dataSource[deviceId].value[x]
 	for (regId = 1; regId < (dataSource[deviceId].numRegisters + 1); regId++)
 	{
-		// Registers 9-24 are the raw RTD values needing further processing, Registere 1-7 are the internal floats gernerated on chip
-		if (dataSource[deviceId].regAddress[regId] > 7)
-		{
-			dataSource[deviceId].value[regId] = decodeRtdModbusReading((int)dataSource[deviceId].value[regId]);
-		}
+			
+		dataSource[deviceId].value[regId] = decodeRtdModbusReading((int)dataSource[deviceId].value[regId]);
+		
 	}
 }
 
@@ -239,8 +189,8 @@ int reconfigureRTU(int deviceId, int modbusBaudSetting, int chanModeSetting[], i
 	filterMode[1] = "50Hhz Filter Enabled";
 
 	const char *LiveMode[2];
-	LiveMode[0] = "Live Temp Float Readings Disabled";
-	LiveMode[1] = "Live Temp Float Readings Enabled";
+	LiveMode[0] = "Calculated Floats Enabled";
+	LiveMode[1] = "Raw RTD Values Enabled";
 
 	const char *avgMode[5];
 	avgMode[1] = "4 Readings";
@@ -289,29 +239,36 @@ int reconfigureRTU(int deviceId, int modbusBaudSetting, int chanModeSetting[], i
 	// Enable/Disable Modbus debug
 	modbus_set_debug(mb, FALSE);
 
+	modbus_flush(mb);
+
 	// check we can connect (not sure if this is relevant on serial modbus)
 	if (modbus_connect(mb) == -1)
 	{
 		printf("Connect Failed to Modbus ID [%i] on [%s]\n", dataSource[deviceId].modbusId,
 			   dataSource[deviceId].interface);
+	   
+		modbus_flush(mb);			   
 		modbus_close(mb);
 		modbus_free(mb);
 		return -1;
 	}
+	
+	modbus_flush(mb);
 
 	//  50Hz/60Hz Filter  (1=60Hz/2=50Hz)
 	if (chan50HzFiter > 0)
 	{
 		printf("Changing Mains filter mode to : %s\n", filterMode[(chan50HzFiter - 1)]);
 		// Per-channel 50/60Hz Filter setting
-		for (int i = 1; i < 5; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			tableRegisters[0] = (chan50HzFiter - 1);
-			// Due to the way modbus registers start at 1 and not 0, 31 = register address 32
-			rc = modbus_write_registers(mb, (27 + i), 1, tableRegisters);
+			// remember that we need to -1 from the table in the PDF as modbus registers index from 0 
+			rc = modbus_write_registers(mb, (36 + i), 1, tableRegisters);
 			if (rc == -1)
 			{
-				printf("Modbus request Fail : Device Address [%i] Start Address [%i] For [1] Registers \n", deviceId, (27 + i));
+				printf("Modbus request Fail : Device Address [%i] Start Address [%i] For [1] Registers \n", deviceId, (36 + i));				
+				modbus_flush(mb);
 				modbus_close(mb);
 				modbus_free(mb);
 				exit(1);
@@ -320,18 +277,20 @@ int reconfigureRTU(int deviceId, int modbusBaudSetting, int chanModeSetting[], i
 	}
 
 	// 2/3/4wire mode per-channel setting
-	for (int i = 1; i < 5; i++)
+	for (int i = 0; i < 4; i++)
 	{
 
 		if (chanModeSetting[i] > 0)
 		{
 			printf("Changing Chan %i mode to %s -- !! Change RTU Push On Link Configuration !!\n", i, rtdMode[chanModeSetting[i]]);
 			tableRegisters[0] = chanModeSetting[i];
-			// Due to the way modbus registers start at 1 and not 0, 31 = register address 32
-			rc = modbus_write_registers(mb, (31 + i), 1, tableRegisters);
+			// remember that we need to -1 from the table in the PDF as modbus registers index from 0 
+			rc = modbus_write_registers(mb, (40 + i), 1, tableRegisters);
 			if (rc == -1)
 			{
-				printf("Modbus request Fail : Device Address [%i] Start Address [%i] For [1] Registers \n", deviceId, (31 + i));
+				printf("Modbus request Fail : Device Address [%i] Start Address [%i] For [1] Registers \n", deviceId, (40 + i));
+				
+				modbus_flush(mb);
 				modbus_close(mb);
 				modbus_free(mb);
 				exit(1);
@@ -344,10 +303,13 @@ int reconfigureRTU(int deviceId, int modbusBaudSetting, int chanModeSetting[], i
 	{
 		printf("Changing RTD  Averaging to : %s\n", avgMode[rtdAverageSetting]);
 		tableRegisters[0] = rtdAverageSetting;
-		rc = modbus_write_registers(mb, 36, 1, tableRegisters);
+		// remember that we need to -1 from the table in the PDF as modbus registers index from 0 
+		rc = modbus_write_registers(mb, 44, 1, tableRegisters);
 		if (rc == -1)
 		{
-			printf("Modbus request Fail : Device Address [%i] Start Address [36] For [1] Registers \n", deviceId);
+			printf("Modbus request Fail : Device Address [%i] Start Address [45] For [1] Registers \n", deviceId);
+			
+			modbus_flush(mb);
 			modbus_close(mb);
 			modbus_free(mb);
 			exit(1);
@@ -356,13 +318,14 @@ int reconfigureRTU(int deviceId, int modbusBaudSetting, int chanModeSetting[], i
 
 	if (LiveTempEnable > 0)
 	{
-		printf("Changing Live Float Readings setting to : %s\n", LiveMode[(LiveTempEnable - 1)]);
-		// Enable Live Float Value Calculation  (1=Off|2=On)
+		printf("Changing  Raw/Calc Readings setting to : %s\n", LiveMode[(LiveTempEnable - 1)]);		
 		tableRegisters[0] = (LiveTempEnable - 1);
-		rc = modbus_write_registers(mb, 37, 1, tableRegisters);
+		rc = modbus_write_registers(mb, 45, 1, tableRegisters);
 		if (rc == -1)
 		{
-			printf("Modbus request Fail : Device Address [%i] Start Address [37] For [1] Registers \n", deviceId);
+			printf("Modbus request Fail : Device Address [%i] Start Address [46] For [1] Registers \n", deviceId);
+			
+			modbus_flush(mb);
 			modbus_close(mb);
 			modbus_free(mb);
 			exit(1);
@@ -373,10 +336,11 @@ int reconfigureRTU(int deviceId, int modbusBaudSetting, int chanModeSetting[], i
 	{
 		printf("Changing RTU Baud Rate to %s...\n", rtuBaud[modbusBaudSetting]);
 		tableRegisters[0] = modbusBaudSetting;
-		rc = modbus_write_registers(mb, 38, 1, tableRegisters);
+		rc = modbus_write_registers(mb, 46, 1, tableRegisters);
 		if (rc == -1)
 		{
-			printf("Modbus request Fail : Device Address [%i] Start Address [123] For [1] Registers \n", deviceId);
+			printf("Modbus request Fail : Device Address [%i] Start Address [47] For [1] Registers \n", deviceId);
+			modbus_flush(mb);
 			modbus_close(mb);
 			modbus_free(mb);
 			exit(1);
@@ -385,10 +349,11 @@ int reconfigureRTU(int deviceId, int modbusBaudSetting, int chanModeSetting[], i
 
 	printf("Writing Config Register...\n");
 	tableRegisters[0] = 255;
-	rc = modbus_write_registers(mb, 39, 1, tableRegisters);
+	rc = modbus_write_registers(mb, 47, 1, tableRegisters);
 	if (rc == -1)
 	{
-		printf("Modbus request Fail : Device Address [%i] Start Address [123] For [1] Registers \n", deviceId);
+		printf("Modbus request Fail : Device Address [%i] Start Address [48] For [1] Registers \n", deviceId);
+		modbus_flush(mb);
 		modbus_close(mb);
 		modbus_free(mb);
 		exit(1);
@@ -413,7 +378,9 @@ int resetMinReadings(int deviceId)
 	int regId;
 
 
-	uint16_t tableRegisters[8] = {32767,32767,32767,32767};
+	// write 2147483647 to the min register to force a re-set of the counter
+	uint16_t tableRegisters[8] = {32767,65535,32767,65535,32767,65535,32767,65535};
+
 
 	// modbus device handle
 	modbus_t *mb;  
@@ -453,14 +420,15 @@ int resetMinReadings(int deviceId)
 		modbus_free(mb);
 		return -1;
 	}
-
+	
+	modbus_flush(mb);
 	
 	printf("Resetting Min Counters...\r\n");
-	// remember that modbus registers index from 0 so address 40001 = 0th register
-	rc = modbus_write_registers(mb, 20,  4, tableRegisters);
+	// remember that we need to -1 from the table in the PDF as modbus registers index from 0 
+	rc = modbus_write_registers(mb, 24,  16, tableRegisters);
 	if (rc == -1)
 	{
-		printf("Modbus request Fail : Device Address [%i] Start Address [20] For [4] Registers \n",deviceId);
+		printf("Modbus request Fail : Device Address [%i] Start Address [25] For [8] Registers \n",deviceId);
 		modbus_flush(mb);
 		modbus_close(mb);
 		modbus_free(mb);
@@ -469,8 +437,7 @@ int resetMinReadings(int deviceId)
 
 	modbus_flush(mb);
 	modbus_close(mb);
-	modbus_free(mb);
-	exit(1);
+	modbus_free(mb);	
 	
 	exit(0);
 
@@ -485,7 +452,7 @@ int resetMaxReadings(int deviceId)
 	int regId;
 
 
-	uint16_t tableRegisters[4] = {0,0,0,0}; 
+	uint16_t tableRegisters[8] = {0,0,0,0,0,0,0,0}; 
 
 	// modbus device handle
 	modbus_t *mb;  
@@ -525,13 +492,14 @@ int resetMaxReadings(int deviceId)
 		return -1;
 	}
 
+	modbus_flush(mb);
 	
 	printf("Resetting Max Counters...\n\r");
 	// remember that modbus registers index from 0 so address 40001 = 0th register
-	rc = modbus_write_registers(mb, 16,  4, tableRegisters);
+	rc = modbus_write_registers(mb, 16,  16, tableRegisters);
 	if (rc == -1)
 	{
-		printf("Modbus request Fail : Device Address [%i] Start Address [16] For [4] Registers \n",deviceId);
+		printf("Modbus request Fail : Device Address [%i] Start Address [16] For [8] Registers \n",deviceId);
 
 		modbus_flush(mb);
 		modbus_close(mb);
